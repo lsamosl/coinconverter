@@ -6,10 +6,13 @@ import {
   View,
   Picker,
   TextInput,
-  Button
+  Button,
+  Modal
 } from 'react-native';
 import SplashScreen from 'react-native-splash-screen'
+//import ValidationComponent from 'react-native-form-validator'
 import { MxnToUsd, UsdToMxn, labelMxnToUsd, labelUsdToMxn } from './Constantes'
+import {getCurrency} from './Servicios/Convertidor'
 
 export default class App extends Component {
   constructor(props){
@@ -17,15 +20,16 @@ export default class App extends Component {
     this.state = {
       currencyType: MxnToUsd,
       amount: 0,
-      labelAmount: labelMxnToUsd
+      labelAmount: labelMxnToUsd,
+      amountConvert : 0
     }
   }
-
 
   onChangeConverterType = (itemValue, itemIndex) => {   
     this.setState(
       {
-        currencyType: itemValue
+        currencyType: itemValue,
+        amountConvert: 0
       }, () => 
       {
         this.updateLabelAmount();
@@ -34,12 +38,10 @@ export default class App extends Component {
   }
 
   updateLabelAmount = () => {
-    console.log(" this.state.currencyType: ");
-    const label = labelMxnToUsd;
-     if(this.state.currencyType == UsdToMxn){
-      label: labelUsdToMxn;
+    let label = labelMxnToUsd;
+     if(this.state.currencyType === UsdToMxn){
+      label= labelUsdToMxn;
     }
-    
     this.setState( 
       {
         labelAmount: label
@@ -53,8 +55,14 @@ export default class App extends Component {
     });
   }
 
+  updateAmountConvert = (value) => {
+    this.setState({
+      amountConvert: value
+    });
+  }
+
   calcular = () => {
-    console.log("Consumo de API");
+    getCurrency(this.state.currencyType, this.state.amount, MxnToUsd, this.updateAmountConvert);
   }
 
   render() {
@@ -64,7 +72,8 @@ export default class App extends Component {
         <Text>
           Importe
         </Text>
-        <TextInput onChangeText = {(value) => {this.onChangeAmount(value)}}/>
+        <TextInput onChangeText = {(value) => {this.onChangeAmount(value)}}
+                   keyboardType='numeric'/>
 
         <Text>
           Tipo de conversion
@@ -87,7 +96,9 @@ export default class App extends Component {
         <Text>
           {this.state.labelAmount}
         </Text>      
-        <TextInput editable={false} />
+        <TextInput editable={false} >
+          {this.state.amountConvert}
+        </TextInput>
 
       </View>
     );

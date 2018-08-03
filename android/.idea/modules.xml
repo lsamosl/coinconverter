@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/CoinConverter.iml" filepath="$PROJECT_DIR$/CoinConverter.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/../node_modules/react-native-splash-screen/android/react-native-splash-screen.iml" filepath="$PROJECT_DIR$/../node_modules/react-native-splash-screen/android/react-native-splash-screen.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../node_modules/react-native-splash-screen/android/react-native-splash-screen.iml" filepath="$PROJECT_DIR$/../node_modules/react-native-splash-screen/android/react-native-splash-screen.iml" />
     </modules>
   </component>
 </project>
