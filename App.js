@@ -1,39 +1,94 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  Picker,
+  TextInput,
+  Button
 } from 'react-native';
 import SplashScreen from 'react-native-splash-screen'
+import { MxnToUsd, UsdToMxn, labelMxnToUsd, labelUsdToMxn } from './Constantes'
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+export default class App extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      currencyType: MxnToUsd,
+      amount: 0,
+      labelAmount: labelMxnToUsd
+    }
+  }
 
-type Props = {};
-export default class App extends Component<Props> {
+
+  onChangeConverterType = (itemValue, itemIndex) => {   
+    this.setState(
+      {
+        currencyType: itemValue
+      }, () => 
+      {
+        this.updateLabelAmount();
+      }
+    );
+  }
+
+  updateLabelAmount = () => {
+    console.log(" this.state.currencyType: ");
+    const label = labelMxnToUsd;
+     if(this.state.currencyType == UsdToMxn){
+      label: labelUsdToMxn;
+    }
+    
+    this.setState( 
+      {
+        labelAmount: label
+      }
+    );
+  }
+
+  onChangeAmount = (value) =>{
+    this.setState({
+      amount: value
+    });
+  }
+
+  calcular = () => {
+    console.log("Consumo de API");
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
+
+        <Text>
+          Importe
         </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
+        <TextInput onChangeText = {(value) => {this.onChangeAmount(value)}}/>
+
+        <Text>
+          Tipo de conversion
         </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
+        <Picker selectedValue={this.state.currencyType}
+                onValueChange={(itemValue, itemIndex) => {this.onChangeConverterType(itemValue, itemIndex);}}>
+                <Picker.Item label="MXN -> USD" value={MxnToUsd} />
+                <Picker.Item label="USD -> MXN" value={UsdToMxn}/> 
+        </Picker>
+
+        <Button title="Convertir"
+                onPress={() => this.calcular()}/>
+
+        <Text  />  
+
+        <Text/>
+        <Text/>
+        <Text/>
+
+        <Text>
+          {this.state.labelAmount}
+        </Text>      
+        <TextInput editable={false} />
+
       </View>
     );
   }
@@ -47,17 +102,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+    paddingHorizontal: 16,
   },
 });
